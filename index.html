@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Parent x Iframe</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- Css -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="main-title">Cross-origin communication between iframe and it's parent</h3>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <h4 class="card-header">Parent</h4>
+                    <div class="card-body">
+                        <textarea id="parentSource" placeholder="Parent textarea . . ." cols=30 rows=5></textarea>
+                        <h6 class="card-title">Text from iframe:</h6>
+                        <p id="parentOutput" class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                    <iframe id="iframeDemo" src="iframe.html"></iframe>                
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!-- Scripts -->
+    <script>
+
+        // Get data from parent textarea and post a message
+        $(document).on('keyup','#parentSource',function(){
+            var data = $(this).val();
+            var destination = document.getElementById("iframeDemo").contentWindow;
+            destination.postMessage(data,'*');
+        })
+
+
+        // Receive data from iframe and write on parent output 
+        var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+        var eventer = window[eventMethod];
+        var messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
+
+        eventer(messageEvent, function (e) {
+            //data you receive from iframe is stored inside e.data
+            $('#parentOutput').text(e.data);
+        });
+    </script>
+    
+</body>
+</html>

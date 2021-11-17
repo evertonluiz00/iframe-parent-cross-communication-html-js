@@ -1,0 +1,29 @@
+.main-title {
+    text-align: center;
+    padding: 10px;
+}
+
+.card {
+    height: 300px;
+}
+
+.card-title {
+    margin-top: 10px;
+}
+
+textarea {
+    width: 100%;
+}
+
+#iframeDemo {
+    width: 100%;
+    height: 300px;
+}
+
+#parentSource, #iframeOutput {
+    color: darkblue;
+}
+
+#iframeSource, #parentOutput {
+    color: olive;
+}
